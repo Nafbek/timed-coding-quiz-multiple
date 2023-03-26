@@ -8,26 +8,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="container">
+    <div class="container">
         <div id="topLevel">
-            <h4 id="viewScore"></h4>
-            <h4 id="timer"></h4>
+            <h4 id="viewScore">View Highscore</h4>
+            <span id="timer"></span>
+            <h4 id="timer"><span>Time:</span> </h4>
         </div>
-        <div id="Instruction">
-            <button class="button" id="start"></button>
+        <div class="center-div" id="instruction-div">
+            <h2 id="instruction">This is a timed coding quiz</h2>
+            <button class="button" id="start">Start Quiz</button>
         </div>
-        <div></div>
-        <p></p>
-        <div id="allDone">
-            <label for="final score"></label>
-            <input type="text">
-            <button id="submitFinal"></button>
+        <div class="hidden-div center-div" id="questions-div">
+            <h2 id="question"></h2>
+            <ol id="choices"></ol> 
+            <p></p>  
         </div>
-        <div id="highScore">
-            <button id="goBack"></button>
-            <button id="clearScore"></button>
+        <div class="hidden-div center-div" id="summary">
+            <p>All done!</p>
+            <p>Your Final Score:</p>
+            <label for="final score">Enter initials:</label>
+            <input type="text" placeholder="Your initials">
+            <button class="button" id="submitFinal">Submit</button>
         </div>
-    </div>
+        <div class="hidden-div center-div" id="highscore">
+            <ol id="initialAndScore">Highscore:</ol>
+            <button class="button" id="goBack">Go Back</button>
+            <button class="button" id="clearHighscore">Clear Highscore</button>
+        </div>
+    </div> 
     
 <script src="script.js"></script>
 </body>

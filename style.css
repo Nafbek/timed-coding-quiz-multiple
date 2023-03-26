@@ -1,0 +1,38 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 100%;
+}
+.container{
+    width: 80%;
+    margin: 0 auto;
+    border-style: dashed;
+}
+span{
+    margin-left: 80%;
+}
+.center-div{
+    margin: 5% 25%;
+}
+#instruction-div{
+    text-align: center;
+}
+#questions-div{
+    border-bottom-style: solid;
+}
+
+/* .hidden-div{
+    display: none;
+} */
+
+.button{
+    width: auto;
+    padding: 1%;
+    background-color: rgb(197, 142, 248);
+    border-radius: 15%;
+    font-weight: bold;
+}
+.button:hover{
+    background-color: rgb(198, 240, 121);
+    border-style: outset;
+
+}
