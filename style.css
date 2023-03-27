@@ -11,13 +11,16 @@ span{
     margin-left: 80%;
 }
 .center-div{
-    margin: 5% 25%;
+    margin: 0 25%;
 }
 #instruction-div{
     text-align: center;
 }
 #questions-div{
     border-bottom-style: solid;
+}
+#summary{
+    margin-top: 5%;
 }
 
 /* .hidden-div{
