@@ -44,17 +44,20 @@ var questionsPack = [
 */
 
 //Declare and initialize variables
-var givenTime = 3;
+var givenTime = 15;
 var totalScore = 0;
 var thisQuestion = 0;
+// var multipleChoices = 0;
+var checkAnswer;
 var timer = document.getElementById("timer");
 var startButton = document.getElementById("startBtn");
 var stopCommand = document.getElementById("stop");
 var questionEl = document.getElementById("question");
-var multipleChoicesEl = document.getElementById("choices");
+var choicesEl = document.getElementById("choices");
 var CorrectAnswer = document.querySelector(".correct-answer");
 var submitButton = document.getElementById("submitFinal");
-var initials = document.querySelector('input[name="user-initials"]');
+var scorePEl = document.getElementById("score-paragraph");
+var userInitials = document.querySelector('input[name="user-initials"]');
 var initialAndHighscore = document.getElementById("initialAndScore");
 var goBackButton = document.getElementById("goBackBtn");
 var clearButton = document.getElementById("clearHighscore");
@@ -62,75 +65,128 @@ var clearButton = document.getElementById("clearHighscore");
 
 
 
-// startButton.addEventListener("click", displayQuestions);
-// startButton.addEventListener("click", startTimer)
+
+startButton.addEventListener("click", startTimer)
+startButton.addEventListener("click", displayQuestions);
+
+// var summary = document.getElementById("summary");
+// summary.classList.add("hidden-div");
+//use remove()
+
+//i do same for highscore and initials
 
 function startTimer() {
     var timeInterval = setInterval(function () {
-        timer.textContent = "Time:" + givenTime;
         givenTime--;
-        if (givenTime === 0) {
+        timer.textContent = "Time:" + givenTime;
+        if (givenTime <= 0 || thisQuestion >= questionsPack.length) {
             clearInterval(timeInterval);
-            ///////
-        } else {
-            displayQuestions();
+           
+            submit();
         }
 
     }, 1000)
+
+    displayQuestions();
+   
+    //use setTimeOut();
 };
-
-
-
-
-
-// timer = setInterval(function(){
-//     givenTime--;
-//     if(givenTime ===0){
-//         clearInterval();
-//         stop();
-//         displaySummary();
-//     }else{
-//         displayQuestions();
-//     }
-// },300000)
-
 
 
 
 
 function displayQuestions() {
 
-
     questionEl.textContent = questionsPack[thisQuestion].question;
+    choicesEl.innerHTML = "";
+
+    for (var i = 0; i < questionsPack[thisQuestion].choices.length; i++) {
+        var listOfChoices = document.createElement("li")
+        listOfChoices.innerHTML = questionsPack[thisQuestion].choices[i];
+        choicesEl.appendChild(listOfChoices);
 
 
 
-    //     for(var i =0; i<questionsPack.length; i++){
+        listOfChoices.addEventListener("click", function () {
 
-    // }
+            choicesEl.textContent = "";
+            questionEl.textContent = ""
+            thisQuestion++;
+            checkAnswer = this.textContent;
+            if (checkAnswer === questionsPack[thisQuestion].answer) {
+                CorrectAnswer.textContent = "Correct";
+                totalScore++;
+            } else {
+                CorrectAnswer.textContent = "Wrong";
+                givenTime -= 5;
+            }
+            // if (checkAnswer !== questionsPack[thisQuestion].answer){
+            //     var timeOut = setTimeout(function(){
+            //         givenTime;
+
+            //     }, 2000)
+            //     clearTimeout(timeOut);
+            // }
 
 
-    for (var index = 0; index < questionsPack[i].choices[index].length; index++) {
-        var liEl = document.createElement("li");
-        liEl.textContent = questionsPack[thisQuestion].choices[index];
 
-        multipleChoicesEl.appendChild(liEl);
 
+        })
     }
 
-    thisQuestion++;
+    choicesEl.querySelectorAll("li").forEach(function (li) {
+        li.addEventListener("click", function () {
+            for (var i = 0; i < questionsPack[thisQuestion].choices[i].length; i++) {
+                questionEl.textContent = questionsPack[thisQuestion].question.choices[i];
+                // choicesEl.textContent= questionsPack[thisQuestion].choices[i];
+
+
+            }
+        })
+    });
+
+    submit();
+}
+
+function submit() {
+    questionEl.innerHTML = "";
+    choicesEl.innerHTML = "";
+    timer.textContent = "" ;
+
+    initials.value = "";
+    var allDone = document.getElementById("allDone");
+    allDone.textContent = "All Done!";
+    scorePEl.textContent = "Your final score: " + totalScore;
+    initialAndHighscore.appendChild(scorePEl);
+
+    var labelEl = document.querySelector("label");
+    labelEl.textContent = UserInitials;
+    submitButton.addEventListener("click", function () {
+        localStorage.setItem("userInitials", JSON.stringify(userInitials.value))
+        localStorage.setItem("userScore", JSON.stringify(totalScore))                   //is there any way to concatenate?
+        initials.value = "";
+        displayHighscore();
+    })
+}
+
+function displayHighscore() {
+    initialAndHighscore.textContent += localStorage.getItem("userScore") + "-" + localStorage.getItem("userInitials");
+    //is there any way to concatenate?
+
+    clearButton.addEventListener("click", function () {
+        initialAndHighscore.textContent = "";
+    })
+    goBackButton.addEventListener("click", function () {
+
+        ////////???????? i need to get back to the home page
+        location.reload();
+    })
 }
 
 
 
-// }
-// function displaySummary(){
-
-// }
-// function stop(){
-//     //your time is up
-
-// }
 
 
-//eventListener for highscore get displayed when the initials submitted
+
+
+

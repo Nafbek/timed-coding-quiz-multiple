@@ -19,20 +19,20 @@
             <button class="button" id="startBtn">Start Quiz</button>
         </div>
         <div id="stop"></div>
-        <div class="hidden-div center-div" id="questions-div">
+        <div class="center-div" id="questions-div">
             <h2 id="question"></h2>
-            <ol id="choices"></ol>   
+            <ol type="A" id="choices"></ol>   
         </div>
         <div class="correct-answer center-div"></div> 
-        <div class="hidden-div center-div" id="summary">
-            <p>All done!</p>
-            <p>Your Final Score:</p>
-            <label for="final score">Enter initials:</label>
+        <div class=" center-div" id="summary">
+            <p id="allDone"></p>
+            <p id="score-paragraph"></p>
+            <label for="final score"></label>
             <input type="text" id="initials-input" name="user-initials" placeholder="Your-initials">
             <button class="button" id="submitFinal">Submit</button>
         </div>
-        <div class="hidden-div center-div" id="highscore">
-            <ol id="initialAndScore">Highscore:</ol>
+        <div class=" center-div" id="highscore">
+            <ol id="initialAndScore"></ol>
             <button class="button" id="goBackBtn">Go Back</button>
             <button class="button" id="clearHighscore">Clear Highscore</button>
         </div>
