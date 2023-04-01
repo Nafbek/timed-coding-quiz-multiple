@@ -11,17 +11,15 @@ span{
     margin-left: 80%;
 }
 .center-div{
-    margin: 0 25%;
+    width: fit-content;
+    margin: 2% 25%;
 }
 #instruction-div{
     text-align: center;
 }
-#questions-div{
-    border-bottom-style: solid;
-}
-#summary{
+/* #summary{
     margin-top: 5%;
-}
+} */
 
 /* .hidden-div{
     display: none;

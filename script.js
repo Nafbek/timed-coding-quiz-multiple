@@ -48,13 +48,16 @@ var givenTime = 15;
 var totalScore = 0;
 var thisQuestion = 0;
 // var multipleChoices = 0;
-var checkAnswer;
+var quizDivEl = document.getElementById("quiz-div");
+var instructionDivEl = document.getElementById("instruction-div")
 var timer = document.getElementById("timer");
 var startButton = document.getElementById("startBtn");
-var stopCommand = document.getElementById("stop");
+// var stopCommand = document.getElementById("stop");
 var questionEl = document.getElementById("question");
-var choicesEl = document.getElementById("choices");
-var CorrectAnswer = document.querySelector(".correct-answer");
+var choicesOlEl = document.getElementById("choices");
+var CorrectAnswer = document.querySelector("#correct-answer");
+var summaryDivEl = document.getElementById("summary");
+var scoreDivEl = document.getElementById("highscore");
 var submitButton = document.getElementById("submitFinal");
 var scorePEl = document.getElementById("score-paragraph");
 var userInitials = document.querySelector('input[name="user-initials"]');
@@ -69,26 +72,45 @@ var clearButton = document.getElementById("clearHighscore");
 startButton.addEventListener("click", startTimer)
 startButton.addEventListener("click", displayQuestions);
 
-// var summary = document.getElementById("summary");
-// summary.classList.add("hidden-div");
-//use remove()
+//create elements, rather than using the html, for the "#summary" and "#highscore" to appear only whenever get called one after the other 
 
-//i do same for highscore and initials
+//Create class and style the border of the div
+quizDivEl.classList.add("hide-div");
+quizDivEl.setAttribute("style", "border-bottom-style: solid");
+
+//Create an anchor element for multiple choices and style them
+var listOfChoices;
+// var choiceWrapButton = document.createElement("button");
+listOfChoices.setAttribute("style", "border:solid; background-color:purple")
+
+
 
 function startTimer() {
     var timeInterval = setInterval(function () {
         givenTime--;
         timer.textContent = "Time:" + givenTime;
+        // instructionDivEl.classList.add("newInstruction-div");
+        // instructionDivEl.remove();
+
+
         if (givenTime <= 0 || thisQuestion >= questionsPack.length) {
             clearInterval(timeInterval);
-           
+            // timer.textContent ="";
+            // questionEl.textContent = "";
+            // choicesOlEl.innerHTML = "";
+            // startButton.classList.add("hide-btn");
+
+            quizDivEl.remove();
+            timer.remove();
+            // startButton.remove();
+
             submit();
         }
 
     }, 1000)
 
     displayQuestions();
-   
+
     //use setTimeOut();
 };
 
@@ -98,21 +120,23 @@ function startTimer() {
 function displayQuestions() {
 
     questionEl.textContent = questionsPack[thisQuestion].question;
-    choicesEl.innerHTML = "";
+    choicesOlEl.innerHTML = "";
 
     for (var i = 0; i < questionsPack[thisQuestion].choices.length; i++) {
-        var listOfChoices = document.createElement("li")
+        listOfChoices = document.createElement("li")
+
         listOfChoices.innerHTML = questionsPack[thisQuestion].choices[i];
-        choicesEl.appendChild(listOfChoices);
+        choicesOlEl.appendChild(listOfChoices);
+        // choicesOlEl.appendChild(choiceWrapButton);
 
 
-
+        listOfChoices.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248);; width: fit-content; font-weight: bold; padding: 1%; margin: 1%; border-radius: 10%")
         listOfChoices.addEventListener("click", function () {
 
-            choicesEl.textContent = "";
+            choicesOlEl.textContent = "";
             questionEl.textContent = ""
             thisQuestion++;
-            checkAnswer = this.textContent;
+            var checkAnswer = this.textContent;
             if (checkAnswer === questionsPack[thisQuestion].answer) {
                 CorrectAnswer.textContent = "Correct";
                 totalScore++;
@@ -120,13 +144,13 @@ function displayQuestions() {
                 CorrectAnswer.textContent = "Wrong";
                 givenTime -= 5;
             }
-            // if (checkAnswer !== questionsPack[thisQuestion].answer){
-            //     var timeOut = setTimeout(function(){
-            //         givenTime;
+            if (checkAnswer !== questionsPack[thisQuestion].answer && givenTime >=6) {
+                var timeOut = setTimeout(function () {
+                    givenTime;
 
-            //     }, 2000)
-            //     clearTimeout(timeOut);
-            // }
+                }, 2000)
+                clearTimeout(timeOut);
+            }
 
 
 
@@ -134,37 +158,34 @@ function displayQuestions() {
         })
     }
 
-    choicesEl.querySelectorAll("li").forEach(function (li) {
-        li.addEventListener("click", function () {
-            for (var i = 0; i < questionsPack[thisQuestion].choices[i].length; i++) {
-                questionEl.textContent = questionsPack[thisQuestion].question.choices[i];
-                // choicesEl.textContent= questionsPack[thisQuestion].choices[i];
 
-
-            }
-        })
-    });
-
-    submit();
 }
 
+
+
+
 function submit() {
-    questionEl.innerHTML = "";
-    choicesEl.innerHTML = "";
-    timer.textContent = "" ;
+    // questionEl.innerHTML = "";
+    // choicesOlEl.innerHTML = "";
+    // timer.textContent = "";
 
-    initials.value = "";
-    var allDone = document.getElementById("allDone");
-    allDone.textContent = "All Done!";
-    scorePEl.textContent = "Your final score: " + totalScore;
-    initialAndHighscore.appendChild(scorePEl);
+    userInitials.value = "";
+    var allDonePEl = document.getElementById("allDone");
+    allDonePEl.textContent = "All Done!";
+    // scorePEl.textContent = 
+    // initialAndHighscore.appendChild(scorePEl);
 
-    var labelEl = document.querySelector("label");
-    labelEl.textContent = UserInitials;
+    // var labelEl = document.querySelector("label");
+var labelEl =document.createElement("label");
+    labelEl.textContent = "Your final score: " + totalScore;
+    scorePEl.appendChild(labelEl);
+
+   
+
     submitButton.addEventListener("click", function () {
         localStorage.setItem("userInitials", JSON.stringify(userInitials.value))
         localStorage.setItem("userScore", JSON.stringify(totalScore))                   //is there any way to concatenate?
-        initials.value = "";
+        userInitials.value = "";
         displayHighscore();
     })
 }
