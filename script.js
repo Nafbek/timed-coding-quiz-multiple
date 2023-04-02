@@ -64,14 +64,14 @@ var userInitials = document.querySelector('input[name="user-initials"]');
 
 
 startButton.addEventListener("click", startTimer)
-startButton.addEventListener("click", displayQuestions);
+// startButton.addEventListener("click", displayQuestions);
 
 
 
 
 //Create an anchor element for multiple choices and style them ..........????
-var listOfChoices;
-listOfChoices.setAttribute("style", "border:solid; background-color:purple")
+// var listOfChoices;
+// listOfChoices.setAttribute("style", "border:solid; background-color:purple")
 
 
 
@@ -85,6 +85,7 @@ function startTimer() {
             quizDivEl.setAttribute("style", "border-bottom-style: solid");
 
         if (givenTime <= 0 || thisQuestion >= questionsPack.length) {
+            console.log("timer function")
             clearInterval(timeInterval);
             quizDivEl.remove();
             timer.remove();
@@ -116,7 +117,7 @@ function displayQuestions() {
         listOfChoices.addEventListener("click", function () {
             choicesOlEl.textContent = "";
             questionEl.textContent = ""
-            thisQuestion++;
+            
             var checkAnswer = this.textContent;
             if (checkAnswer === questionsPack[thisQuestion].answer) {
                 CorrectAnswer.textContent = "Correct";
@@ -125,13 +126,17 @@ function displayQuestions() {
                 CorrectAnswer.textContent = "Wrong";
                 givenTime -= 5;
             }
-            if (checkAnswer !== questionsPack[thisQuestion].answer && givenTime >=5) {
-                var timeOut = setTimeout(function () {
-                    givenTime;
 
-                }, 2000)
-                clearTimeout(timeOut);
-            }
+            // if (checkAnswer !== questionsPack[thisQuestion].answer && givenTime >=5) {
+            //     var timeOut = setTimeout(function () {
+                    
+            //         thisQuestion++;
+            //         displayQuestions();
+            //     }, 2000)
+            //     clearTimeout(timeOut);
+            // }
+            thisQuestion++;
+
         })
         
     }
@@ -146,7 +151,7 @@ function submit() {
     allDonePEl.textContent = "All Done!";
 
     scorePEl.textContent = "Your Score is: " + totalScore;  //totalScore not increment
-    
+    console.log(totalScore);
     // to store the user's initials and total score values
     submitButton.addEventListener("click", function () {
         localStorage.setItem("userInitials", JSON.stringify(userInitials.value))
@@ -158,6 +163,9 @@ function submit() {
 }
 
 function displayHighscore() {
+    console.log("hi")
+
+    console.log("here you go")
 
     //create a paragraph element to hold and display the initials and score again
 
