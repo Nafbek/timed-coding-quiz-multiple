@@ -28,27 +28,12 @@ var questionsPack = [
 
 ];
 
-/*  
--start button
--timer starts counting down
--1st question and its choices appear
--choice selected, then check for the correct answer (appear before the second question)
--2nd question and its choices appear
--choice selected, then check for the correct answer (appear before the second question)
-- so on until the last question or the timer ===0
--show total score
--ask for initials and submit
--store the initials and score values
--initials and highscore will be displayed with 'Go back' and 'clear highscore' options
-- when 'Go back' gets clicked, reload page
-
-*/
 
 //Declare and initialize variables
-var givenTime = 60;
+var givenTime = 30;
 var totalScore = 0;
 var thisQuestion = 0;
-// var multipleChoices = 0;
+var timeInterval;
 var quizDivEl = document.getElementById("quiz-div");
 var instructionDivEl = document.getElementById("instruction-div")
 var timer = document.getElementById("timer");
@@ -62,61 +47,50 @@ var submitButton = document.getElementById("submitFinal");
 var scorePEl = document.getElementById("score-paragraph");
 var userInitials = document.querySelector('input[name="user-initials"]');
 
-var timeInterval;
-
-
+//
 startButton.addEventListener("click", startTimer)
 
-
-
-
-
-//Create an anchor element for multiple choices and style them ..........????
-// var listOfChoices;
-// listOfChoices.setAttribute("style", "border:solid; background-color:purple")
-
-
-
+//
 function startTimer() {
-    setInterval(function () {
+    timeInterval = setInterval(function () {
         givenTime--;
         timer.textContent = "Time:" + givenTime;
-
-
-
-    }, 1000)
-
-    setTimeout(function () {
-        //         choicesOlEl.textContent = "";
-        // questionEl.textContent = "";
-        // thisQuestion++;
-        displayQuestions();
+ if (givenTime <= 0) {
+        clearInterval(timeInterval);
+        quizDivEl.remove();
+        timer.remove();
+        submit();
+        // nextOrStop()
+    }
 
     }, 1000)
+
+   
+    instructionDivEl.remove()
+
+    displayQuestions()
+
 };
 
 function nextOrStop() {
     if (thisQuestion >= questionsPack.length || givenTime <= 0) {
         clearInterval(timeInterval);
         quizDivEl.remove();
-        timer.remove();
+        timer.remove()
         submit();
     } else {
-        displayQuestions();
+        displayQuestions()
     }
 }
 
 function displayQuestions() {
 
+
     choicesOlEl.innerHTML = "";
-
-
-
-
-
+    questionEl.textContent = questionsPack[thisQuestion].question;
 
     for (var i = 0; i < questionsPack[thisQuestion].choices.length; i++) {
-        questionEl.textContent = questionsPack[thisQuestion].question;
+
 
         var listOfChoices = document.createElement("li");
 
@@ -142,12 +116,7 @@ function displayQuestions() {
 
         //add event listener
         buttonWrapChoice.addEventListener("click", function () {
-            // choicesOlEl.textContent = "";
-            // questionEl.textContent = "";
-
-
-
-
+          
             var checkAnswer = this.textContent;
             if (checkAnswer === questionsPack[thisQuestion].answer) {
 
@@ -163,16 +132,11 @@ function displayQuestions() {
             nextOrStop();
 
 
-
-
-            console.log(givenTime);
-
-
-
         })
 
     }
 
+    
 }
 
 
@@ -234,11 +198,3 @@ function displayHighscore() {
         location.reload();
     })
 }
-
-
-
-
-
-
-
-
