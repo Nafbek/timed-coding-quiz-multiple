@@ -2,7 +2,7 @@
 var questionsPack = [
     {
         question: "Javascript is an _____ language?",
-        choices: ["Obejct-oriented", "Procedural", "Object-based", "All"],
+        choices: ["Object-oriented", "Procedural", "Object-based", "All"],
         answer: "Object-oriented",
     },
     {
@@ -45,7 +45,7 @@ var questionsPack = [
 */
 
 //Declare and initialize variables
-var givenTime = 30;
+var givenTime = 60;
 var totalScore = 0;
 var thisQuestion = 0;
 // var multipleChoices = 0;
@@ -55,16 +55,18 @@ var timer = document.getElementById("timer");
 var startButton = document.getElementById("startBtn");
 var questionEl = document.getElementById("question");
 var choicesOlEl = document.getElementById("choices");
-var CorrectAnswer = document.querySelector("#correct-answer");
+var correctAnswer = document.querySelector("#correct-answer");
 var summaryDivEl = document.getElementById("summary");
 var scoreDivEl = document.getElementById("highscore");
 var submitButton = document.getElementById("submitFinal");
 var scorePEl = document.getElementById("score-paragraph");
 var userInitials = document.querySelector('input[name="user-initials"]');
 
+var timeInterval;
+
 
 startButton.addEventListener("click", startTimer)
-// startButton.addEventListener("click", displayQuestions);
+
 
 
 
@@ -76,70 +78,101 @@ startButton.addEventListener("click", startTimer)
 
 
 function startTimer() {
-    var timeInterval = setInterval(function () {
+    setInterval(function () {
         givenTime--;
         timer.textContent = "Time:" + givenTime;
 
-            //Create class and style the border of the div
-            quizDivEl.classList.add("hide-div");
-            quizDivEl.setAttribute("style", "border-bottom-style: solid");
 
-        if (givenTime <= 0 || thisQuestion >= questionsPack.length) {
-            console.log("timer function")
-            clearInterval(timeInterval);
-            quizDivEl.remove();
-            timer.remove();
-            submit();
-        }
 
     }, 1000)
 
-    displayQuestions();
+    setTimeout(function () {
+        //         choicesOlEl.textContent = "";
+        // questionEl.textContent = "";
+        // thisQuestion++;
+        displayQuestions();
+
+    }, 1000)
 };
 
+function nextOrStop() {
+    if (thisQuestion >= questionsPack.length || givenTime <= 0) {
+        clearInterval(timeInterval);
+        quizDivEl.remove();
+        timer.remove();
+        submit();
+    } else {
+        displayQuestions();
+    }
+}
+
 function displayQuestions() {
-    questionEl.textContent = questionsPack[thisQuestion].question;
+
     choicesOlEl.innerHTML = "";
 
+
+
+
+
+
     for (var i = 0; i < questionsPack[thisQuestion].choices.length; i++) {
-        listOfChoices = document.createElement("li")
+        questionEl.textContent = questionsPack[thisQuestion].question;
 
-        listOfChoices.innerHTML = questionsPack[thisQuestion].choices[i];
+        var listOfChoices = document.createElement("li");
+
+        var buttonWrapChoice = document.createElement("button");
+
+        buttonWrapChoice.textContent = questionsPack[thisQuestion].choices[i];
+
+        listOfChoices.appendChild(buttonWrapChoice);
+
+        // listOfChoices.innerHTML = 
         choicesOlEl.appendChild(listOfChoices);
+        // listOfChoices.innerHTML = questionsPack[thisQuestion].choices[i];
+        // choicesOlEl.appendChild(listOfChoices);
 
+        correctAnswer.setAttribute("style", "border-top: solid")
 
-        listOfChoices.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248);; width: fit-content; font-weight: bold; font-size: 1rem; padding: 1%; margin: 1%; border-radius: 10%");
+        buttonWrapChoice.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248); width: fit-content; font-weight: bold; font-size: 1rem; padding: 1%; margin: 1%; border-radius: 10%");
 
         questionEl.setAttribute("style", "font-weight: bold; font-size: 1rem");
 
 
+
+
         //add event listener
-        listOfChoices.addEventListener("click", function () {
-            choicesOlEl.textContent = "";
-            questionEl.textContent = ""
-            
+        buttonWrapChoice.addEventListener("click", function () {
+            // choicesOlEl.textContent = "";
+            // questionEl.textContent = "";
+
+
+
+
             var checkAnswer = this.textContent;
             if (checkAnswer === questionsPack[thisQuestion].answer) {
-                CorrectAnswer.textContent = "Correct";
-                totalScore++;
-            } else {
-                CorrectAnswer.textContent = "Wrong";
-                givenTime -= 5;
-            }
 
-            // if (checkAnswer !== questionsPack[thisQuestion].answer && givenTime >=5) {
-            //     var timeOut = setTimeout(function () {
-                    
-            //         thisQuestion++;
-            //         displayQuestions();
-            //     }, 2000)
-            //     clearTimeout(timeOut);
-            // }
+                correctAnswer.textContent = "Correct";
+                totalScore++;
+
+            } else {
+                correctAnswer.textContent = "Wrong";
+                givenTime -= 5;
+
+            }
             thisQuestion++;
+            nextOrStop();
+
+
+
+
+            console.log(givenTime);
+
+
 
         })
-        
+
     }
+
 }
 
 
@@ -151,7 +184,7 @@ function submit() {
     allDonePEl.textContent = "All Done!";
 
     scorePEl.textContent = "Your Score is: " + totalScore;  //totalScore not increment
-    console.log(totalScore);
+
     // to store the user's initials and total score values
     submitButton.addEventListener("click", function () {
         localStorage.setItem("userInitials", JSON.stringify(userInitials.value))
@@ -159,7 +192,7 @@ function submit() {
         summaryDivEl.remove();
         displayHighscore();
     })
-    
+
 }
 
 function displayHighscore() {
@@ -170,7 +203,7 @@ function displayHighscore() {
     //create a paragraph element to hold and display the initials and score again
 
     var initialAndHighscore = document.createElement("p");
-    
+
     // initialAndHighscore.textContent += localStorage.getItem("userScore") + "-" + localStorage.getItem("userInitials");
     initialAndHighscore.textContent = "1." + userInitials.value + ": " + totalScore;  //seems unprofessional to put the list of number manually, any other way?  totalScore not increment
     scoreDivEl.appendChild(initialAndHighscore);
