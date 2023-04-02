@@ -8,7 +8,7 @@ body{
     border-style: dashed;
 }
 span{
-    margin-left: 80%;
+    margin-left: 78%;
 }
 .center-div{
     width: fit-content;
@@ -17,13 +17,9 @@ span{
 #instruction-div{
     text-align: center;
 }
-/* #summary{
-    margin-top: 5%;
-} */
-
-/* .hidden-div{
+#summary{
     display: none;
-} */
+}
 
 .button{
     width: auto;
