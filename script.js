@@ -11,19 +11,19 @@ var questionsPack = [
         answer: "All",
     },
     {
-        question: "My third question?",
-        choices: ["choice  A", "choice B", "choice C", "choice D"],
-        answer: "choice B",
+        question: "Inside which HTML element do we put the JavaScript?",
+        choices: ["<js>", "<script>", "<javascript>", "<style>"],
+        answer: "<script>",
     },
     {
-        question: "My fourth question?",
-        choices: ["choice  A", "choice B", "choice C", "choice D"],
-        answer: "choice B",
+        question: "The external JavaScript file must contain the <script> tag.?",
+        choices: ["False", "True"],
+        answer: "False",
     },
     {
-        question: "My fifth question?",
-        choices: ["choice  A", "choice B", "choice C", "choice D"],
-        answer: "choice B",
+        question: "How do you create a function in JavaScript?",
+        choices: ["funtion = myFunction()", "function:myFunction()", "function.myFunction()", "function myFunction()"],
+        answer: "function myFunction()",
     },
 
 ];
@@ -80,12 +80,14 @@ function nextOrStop() {
 }
 //Execute questions in order
 function displayQuestions() {
-
-    choicesOlEl.innerHTML = "";
-    questionEl.textContent = questionsPack[thisQuestion].question;
     
-    //Display questions 
+    //Erase multiple choices before the next get displayed
+    choicesOlEl.innerHTML = "";
+    
+    //Display questions and choices
     for (var i = 0; i < questionsPack[thisQuestion].choices.length; i++) {
+        questionEl.textContent = questionsPack[thisQuestion].question;
+
         //Creates elements for the multiple choice and its wrapper button
         var listOfChoices = document.createElement("li");
         var buttonWrapChoice = document.createElement("button");
@@ -98,17 +100,18 @@ function displayQuestions() {
         buttonWrapChoice.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248); width: fit-content; font-weight: bold; font-size:small; padding: 1%; margin: 1%; border-radius: 10%");
         questionEl.setAttribute("style", "font-weight: bold; font-size: 1rem");
 
-        //Add on mouseover event listener to the multiple choices' buttons on     // looks unprofessional,  i think
+        //Add on mouseover event listener to the multiple choices' buttons         ////////  // looks unprofessional when displayed,  i think
         buttonWrapChoice.addEventListener("mouseover", function () {
             this.setAttribute("style", "background-color: rgb(198, 240, 121); font-size: bold")
         })
+
         //Set the attributes back to the original
         buttonWrapChoice.addEventListener("mouseout", function () {
             this.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248)")
         })
-        //add event listener
-        buttonWrapChoice.addEventListener("click", function () {
 
+        //Add event listener to the multiple choices
+        buttonWrapChoice.addEventListener("click", function () {
             var checkAnswer = this.textContent;
             if (checkAnswer === questionsPack[thisQuestion].answer) {
                 correctAnswer.textContent = "Correct";
@@ -126,49 +129,51 @@ function displayQuestions() {
 }
 
 
+//Execute submission of initials and total score 
 function submit() {
 
-    summaryDivEl.setAttribute("style", "display: block; margin-left: 35%");
+    //Get an element from HTML
     var allDonePEl = document.getElementById("allDone");
     allDonePEl.textContent = "All Done!";
 
-    summaryDivEl.classList.add("summary-submit");             //to manipulate its with css
+    //Add class to the Html element and style it
+    summaryDivEl.classList.add("summary-submit");         
+    summaryDivEl.setAttribute("style", "display: block; margin-left: 35%");
 
     scorePEl.textContent = "Your Score is: " + totalScore;
-
 
     // Validate input and store user's initials and total score values
     submitButton.addEventListener("click", function () {
         if (userInitials.value === "" || !/^[a-zA-Z]+$/.test(userInitials.value)) {
             alert("Please enter only letter characters for your initials.")
         } else {
-            localStorage.setItem("userInitials", JSON.stringify(userInitials.value))
-            localStorage.setItem("userScore", JSON.stringify(totalScore))        //is there any way to concatenate?
             summaryDivEl.remove();
-            displayHighscore(); /////////////////////////////////////////////
+            displayHighscore();
         }
-
     })
 }
+
 //Display user's initials and score, and reload the page
 function displayHighscore() {
 
-    var initialAndHighscore = document.createElement("p");
+    //Store the user's data in local storage
+    var storeUserData  = JSON.parse(localStorage.getItem("userData")) || [];
+    storeUserData.push({userInitials: userInitials.value.trim(), score: totalScore});
+    localStorage.setItem("userData", JSON.stringify(storeUserData));
 
-    initialAndHighscore.textContent += localStorage.getItem("userScore") + "-" + localStorage.getItem("userInitials");
-    initialAndHighscore.textContent = "1." + userInitials.value + ": " + totalScore;  //seems unprofessional to put the list of number manually, any other way?  totalScore not increment
+    //Create an element to hold and display the value of the user's both initials and score
+    var initialAndHighscore = document.createElement("p");
+    initialAndHighscore.textContent = "1." + userInitials.value + ": " + totalScore;  //////////////////////////////////////////seems unprofessional to put the list of number manually, any other way?  totalScore not increment
     scoreDivEl.appendChild(initialAndHighscore);
 
-
-    //Add event listener to the 'view highscore' button appended on the top of the page to display the total score after
+    //Add event listener to the 'view highscore' button appended on the top of the page to optionally display the total score
     var viewScoreTopEl = document.createElement("p");
     viewScoreBtn.addEventListener("click", function () {
         viewScoreTopEl.textContent = totalScore;
         topLevelDiv.appendChild(viewScoreTopEl);
     })
 
-
-    //Create button elements
+    //Create button elements for clearing values and reloading the page
     var goBackBtn = document.createElement("button");
     goBackBtn.textContent = "Go Back";
     scoreDivEl.appendChild(goBackBtn);
@@ -177,16 +182,16 @@ function displayHighscore() {
     clearButton.textContent = "Clear Highscore";
     scoreDivEl.appendChild(clearButton);
 
-    //style the div
+    //style the the section and individual buttons
     scoreDivEl.setAttribute("style", "display: block; width: 100%; margin-left: 35%");
-    //style the buttons
     clearButton.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248);; width: fit-content; font-weight: bold; padding: 1%; margin: 1%; border-radius: 10%");
     goBackBtn.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248);; width: fin-content; font-weight: bold; padding: 1%; margin: 1%; border-radius: 10%");
     initialAndHighscore.setAttribute("style", "border-style: inset; width: 25%")
-
+    
+    //Add event listener to the buttons to lead the execution to the next step
     clearButton.addEventListener("click", function () {
         initialAndHighscore.remove();
-        viewScoreTopEl.textContent = "";
+        topLevelDiv.remove();
     })
     goBackBtn.addEventListener("click", function () {
         location.reload();
