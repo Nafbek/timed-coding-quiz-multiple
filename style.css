@@ -1,14 +1,18 @@
+/* ///////////////commment allllllllllllllllllllll */
+
 body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     width: 100%;
+    background-color: aqua;
 }
 .container{
     width: 80%;
     margin: 0 auto;
-    border-style: dashed;
+    border-top-style: outset;
+    
 }
 span{
-    margin-left: 78%;
+    margin-left: 75%;
 }
 .center-div{
     width: fit-content;
@@ -31,5 +35,21 @@ span{
 .button:hover{
     background-color: rgb(198, 240, 121);
     border-style: outset;
+}
+#viewScore:hover {
+    background-color: rgb(81, 230, 113);
+    border-style: outset;
+}
+@media screen and (max-width: 375px) {
+    .container {
+        position: absolute;
+        width: max-content;
 
+    } 
+    .summary-submit, #questions-div{
+        position: relative;
+        width: 30%;
+        margin-left: 0;
+        font-size: small;
+    }
 }

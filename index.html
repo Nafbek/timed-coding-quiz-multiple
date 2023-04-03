@@ -12,8 +12,7 @@
 <body>
     <div class="container">
         <div id="topLevel">
-            <h4 id="viewScore">View Highscore<span id="timer"></span></h4>
-            
+            <h4><button id="viewScore">View Highscore</button> <span id="timer"></span></h4>
         </div>
         <div class="center-div" id="quiz-div">
             <div id="instruction-div">
@@ -26,17 +25,18 @@
             </div>
             <p id="correct-answer"></p>
         </div>
-        
+
         <div class=" center-div" id="summary">
             <p id="allDone"></p>
             <p id="score-paragraph"></p>
             <label for="final score">Enter your initials: </label>
-            <input type="text" id="initials-input" name="user-initials" placeholder="Your-initials">
+            <input type="text" id="initials-input" name="user-initials" placeholder="User's initials here">
             <button class="button" id="submitFinal">Submit</button>
         </div>
         <div class=" center-div" id="highscore"></div>
+    </div>
 
-        <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
