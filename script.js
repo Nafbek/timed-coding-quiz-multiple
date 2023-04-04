@@ -29,7 +29,7 @@ var questionsPack = [
 ];
 
 //Declare and initialize variables
-var givenTime = 30;
+var givenTime = 60;
 var totalScore = 0;
 var thisQuestion = 0;
 var timeInterval;
