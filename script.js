@@ -80,10 +80,10 @@ function nextOrStop() {
 }
 //Execute questions in order
 function displayQuestions() {
-    
+
     //Erase multiple choices before the next get displayed
     choicesOlEl.innerHTML = "";
-    
+
     //Display questions and choices
     for (var i = 0; i < questionsPack[thisQuestion].choices.length; i++) {
         questionEl.textContent = questionsPack[thisQuestion].question;
@@ -94,13 +94,13 @@ function displayQuestions() {
         buttonWrapChoice.textContent = questionsPack[thisQuestion].choices[i];
         listOfChoices.appendChild(buttonWrapChoice);
         choicesOlEl.appendChild(listOfChoices);
-        
+
         //Style the questions and multiple choices
         correctAnswer.setAttribute("style", "border-top: solid; margin-top:2%")
         buttonWrapChoice.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248); width: fit-content; font-weight: bold; font-size:small; padding: 1%; margin: 1%; border-radius: 10%");
         questionEl.setAttribute("style", "font-weight: bold; font-size: 1rem");
 
-        //Add on mouseover event listener to the multiple choices' buttons         ////////  // looks unprofessional when displayed,  i think
+        //Add on mouseover event listener to the multiple choices' buttons        
         buttonWrapChoice.addEventListener("mouseover", function () {
             this.setAttribute("style", "background-color: rgb(198, 240, 121); font-size: bold")
         })
@@ -123,11 +123,8 @@ function displayQuestions() {
             thisQuestion++;
             nextOrStop();
         })
-
     }
-
 }
-
 
 //Execute submission of initials and total score 
 function submit() {
@@ -137,7 +134,7 @@ function submit() {
     allDonePEl.textContent = "All Done!";
 
     //Add class to the Html element and style it
-    summaryDivEl.classList.add("summary-submit");         
+    summaryDivEl.classList.add("summary-submit");
     summaryDivEl.setAttribute("style", "display: block; margin-left: 35%");
 
     scorePEl.textContent = "Your Score is: " + totalScore;
@@ -157,14 +154,23 @@ function submit() {
 function displayHighscore() {
 
     //Store the user's data in local storage
-    var storeUserData  = JSON.parse(localStorage.getItem("userData")) || [];
-    storeUserData.push({userInitials: userInitials.value.trim(), score: totalScore});
+    var storeUserData = JSON.parse(localStorage.getItem("userData")) || [];
+    storeUserData.push({ userInitials: userInitials.value.trim(), score: totalScore });
     localStorage.setItem("userData", JSON.stringify(storeUserData));
 
-    //Create an element to hold and display the value of the user's both initials and score
-    var initialAndHighscore = document.createElement("p");
-    initialAndHighscore.textContent = "1." + userInitials.value + ": " + totalScore;  //////////////////////////////////////////seems unprofessional to put the list of number manually, any other way?  totalScore not increment
-    scoreDivEl.appendChild(initialAndHighscore);
+    //Create order list element to hold the user data
+    var userOrder = document.createElement("ol");
+    scoreDivEl.appendChild(userOrder);
+    
+    //A for loop to add users to the order list
+    for (var i = 0; i < 1; i++) {
+        //Create an element to hold and display the value of the user's both initials and score
+        var initialAndHighscore = document.createElement("li");
+        initialAndHighscore.textContent += userInitials.value.trim() + ": " + totalScore;
+
+        storeUserData[i].textContent = "";
+        userOrder.appendChild(initialAndHighscore);
+    }
 
     //Add event listener to the 'view highscore' button appended on the top of the page to optionally display the total score
     var viewScoreTopEl = document.createElement("p");
@@ -174,23 +180,23 @@ function displayHighscore() {
     })
 
     //Create button elements for clearing values and reloading the page
-    var goBackBtn = document.createElement("button");
-    goBackBtn.textContent = "Go Back";
-    scoreDivEl.appendChild(goBackBtn);
 
     var clearButton = document.createElement("button");
     clearButton.textContent = "Clear Highscore";
     scoreDivEl.appendChild(clearButton);
 
+    var goBackBtn = document.createElement("button");
+    goBackBtn.textContent = "Go Back";
+    scoreDivEl.appendChild(goBackBtn);
+
     //style the the section and individual buttons
-    scoreDivEl.setAttribute("style", "display: block; width: 100%; margin-left: 35%");
     clearButton.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248);; width: fit-content; font-weight: bold; padding: 1%; margin: 1%; border-radius: 10%");
     goBackBtn.setAttribute("style", "border:solid; background-color: rgb(197, 142, 248);; width: fin-content; font-weight: bold; padding: 1%; margin: 1%; border-radius: 10%");
-    initialAndHighscore.setAttribute("style", "border-style: inset; width: 25%")
-    
+    userOrder.setAttribute("style", "border-style: inset; width: auto")
+
     //Add event listener to the buttons to lead the execution to the next step
     clearButton.addEventListener("click", function () {
-        initialAndHighscore.remove();
+        userOrder.remove();
         topLevelDiv.remove();
     })
     goBackBtn.addEventListener("click", function () {
